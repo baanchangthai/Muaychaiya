@@ -36,7 +36,7 @@
     .command-display {
       font-size: 2.2rem;
       font-weight: bold;
-      min-height: 80px;
+      min-height: 90px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -58,7 +58,7 @@
       align-items: center;
       font-size: 0.9rem;
     }
-    select, input[type="number"] {
+    input[type="number"] {
       background: #333;
       color: #FFF;
       border: 1px solid #555;
@@ -67,6 +67,7 @@
       margin-top: 5px;
       font-size: 1rem;
       text-align: center;
+      width: 80px;
     }
     .technique-list {
       text-align: left;
@@ -74,19 +75,19 @@
       padding: 12px 16px;
       border-radius: 12px;
       margin-bottom: 20px;
-      max-height: 180px;
+      max-height: 220px;
       overflow-y: auto;
     }
     .technique-item {
-      margin: 8px 0;
-      font-size: 1rem;
+      margin: 10px 0;
+      font-size: 1.05rem;
       display: flex;
       align-items: center;
     }
     .technique-item input {
       margin-right: 12px;
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
     }
     .btn {
       width: 100%;
@@ -111,7 +112,7 @@
 <body>
 
 <div class="container">
-  <h1>🥊 ซ้อมมวยไชยา (Drill Caller)</h1>
+  <h1>🥊 ซ้อมแม่ไม้มวยไทย</h1>
 
   <div class="timer-display" id="timer">03:00</div>
   <div class="command-display" id="commandBox">พร้อมซ้อม</div>
@@ -128,16 +129,11 @@
   </div>
 
   <div class="technique-list" id="techniqueList">
-    <div class="technique-item"><label><input type="checkbox" value="หมัดตรง" checked> หมัดตรง</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="หมัดฮุก" checked> หมัดฮุก</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="หมัดสอยดาว" checked> หมัดสอยดาว</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="เตะตัด" checked> เตะตัด</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="ถีบ" checked> ถีบ</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="ศอกตัด" checked> ศอกตัด</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="ศอกพุ่ง" checked> ศอกพุ่ง</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="เข่าตรง" checked> เข่าตรง</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="บังหมัด" checked> บังหมัด</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="หลบฉาก" checked> หลบฉาก</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="กวางเหลียวหลัง" checked> กวางเหลียวหลัง</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="บั่นเศียรทศกัณฐ์" checked> บั่นเศียรทศกัณฐ์</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="จระเข้ฟาดหาง" checked> จระเข้ฟาดหาง</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="ฝานบวบ" checked> ฝานบวบ</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="พม่ารำขวาน" checked> พม่ารำขวาน</label></div>
   </div>
 
   <button class="btn btn-start" id="startBtn" onclick="startDrill()">เริ่มซ้อม</button>
@@ -150,32 +146,38 @@
   let remainingSeconds = 0;
   let isRunning = false;
 
-  // โหลดเสียงของระบบเตรียมไว้
-  let systemVoices = [];
-  function loadVoices() {
+  let narisVoice = null;
+
+  // ฟังก์ชันค้นหาเสียง "นริศ" (Naris) ของระบบ
+  function findNarisVoice() {
     if ('speechSynthesis' in window) {
-      systemVoices = window.speechSynthesis.getVoices();
+      const voices = window.speechSynthesis.getVoices();
+      // ค้นหาเสียงชื่อ Naris หรือเสียงไทย
+      narisVoice = voices.find(v => (v.name.includes('Naris') || v.name.includes('นริศ')) && (v.lang.includes('th') || v.lang.includes('TH')));
+      
+      // ถ้าไม่มีเสียงนริศ ให้ใช้เสียงไทยทั่วไปสำรอง
+      if (!narisVoice) {
+        narisVoice = voices.find(v => v.lang.includes('th') || v.lang.includes('TH'));
+      }
     }
   }
+
   if ('speechSynthesis' in window) {
-    loadVoices();
-    window.speechSynthesis.onvoiceschanged = loadVoices;
+    findNarisVoice();
+    window.speechSynthesis.onvoiceschanged = findNarisVoice;
   }
 
-  // ฟังก์ชันเล่นเสียงพูดที่แก้ปัญหาระบบเสียงของ iPad / Safari
   function playCommand(text) {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'th-TH';
-      utterance.rate = 1.1; // ความเร็วพอดีกับการซ้อมมวย
+      utterance.rate = 1.0;
 
-      // ค้นหาเสียงภาษาไทย
-      if (!systemVoices.length) {
-        systemVoices = window.speechSynthesis.getVoices();
+      if (!narisVoice) {
+        findNarisVoice();
       }
-      const thVoice = systemVoices.find(v => v.lang.includes('th') || v.lang.includes('TH'));
-      if (thVoice) {
-        utterance.voice = thVoice;
+      if (narisVoice) {
+        utterance.voice = narisVoice;
       }
 
       window.speechSynthesis.speak(utterance);
@@ -198,7 +200,7 @@
   function startDrill() {
     if (isRunning) return;
 
-    // ปลดล็อกระบบเสียงสำหรับ Safari iOS (สำคัญมาก ต้องสั่งทันทีที่นิ้วสัมผัส)
+    // ปลดล็อกระบบเสียงสำหรับ Safari iOS
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const unlock = new SpeechSynthesisUtterance('');
@@ -215,16 +217,14 @@
     document.getElementById('startBtn').style.display = 'none';
     document.getElementById('stopBtn').style.display = 'block';
 
-    document.getElementById('commandBox').innerText = "เริ่มชก!";
-    playCommand("เริ่มชก");
+    document.getElementById('commandBox').innerText = "เริ่มซ้อม!";
+    playCommand("เริ่มซ้อม");
     updateTimerDisplay();
 
-    // เริ่มออกคำสั่งแรกหลังจากเริ่ม 1 วินาที
     setTimeout(() => {
       if (isRunning) triggerNextCommand();
     }, 1200);
 
-    // ตัวจับเวลานับถอยหลัง
     timerInterval = setInterval(() => {
       remainingSeconds--;
       updateTimerDisplay();
@@ -234,7 +234,6 @@
       }
     }, 1000);
 
-    // ตัวลูปสุ่มคำสั่งท่าชก
     commandInterval = setInterval(() => {
       if (remainingSeconds > 0 && isRunning) {
         triggerNextCommand();
