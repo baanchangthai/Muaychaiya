@@ -43,274 +43,230 @@
       color: #FF5722;
       background: #2A2A2A;
       border-radius: 12px;
-      margin-bottom: 20px;
+      margin: 15px 0;
       padding: 10px;
     }
-    .settings {
+    .controls {
       display: flex;
       justify-content: space-around;
-      margin-bottom: 15px;
-      font-size: 0.95rem;
+      margin-bottom: 20px;
+      gap: 10px;
     }
-    .settings label {
+    .controls div {
       display: flex;
       flex-direction: column;
-      gap: 5px;
-    }
-    input[type="number"], select {
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #444;
-      background: #333;
-      color: #fff;
-      font-size: 0.95rem;
-    }
-    input[type="number"] {
-      width: 70px;
-      text-align: center;
-    }
-    .voice-setting {
-      margin-bottom: 20px;
-      text-align: left;
+      align-items: center;
       font-size: 0.9rem;
     }
-    .voice-setting select {
-      width: 100%;
+    select, input[type="number"] {
+      background: #333;
+      color: #FFF;
+      border: 1px solid #555;
+      padding: 8px;
+      border-radius: 8px;
       margin-top: 5px;
+      font-size: 1rem;
+      text-align: center;
     }
-    .btn-group {
+    .technique-list {
+      text-align: left;
+      background: #2A2A2A;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+    .technique-item {
+      margin: 8px 0;
+      font-size: 1rem;
       display: flex;
-      gap: 12px;
-      margin-bottom: 25px;
+      align-items: center;
     }
-    button {
-      flex: 1;
-      padding: 16px;
+    .technique-item input {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px;
       font-size: 1.2rem;
       font-weight: bold;
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    button:active {
-      opacity: 0.8;
+      margin-top: 8px;
     }
     .btn-start {
       background-color: #00E676;
-      color: #000;
+      color: #121212;
     }
     .btn-stop {
-      background-color: #D32F2F;
-      color: #FFF;
-    }
-    .technique-box {
-      text-align: left;
-      background: #252525;
-      padding: 15px;
-      border-radius: 10px;
-      font-size: 0.95rem;
-    }
-    .technique-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 12px;
-    }
-    .technique-list label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
+      background-color: #E53935;
+      color: #FFFFFF;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>🥊 สั่งคำสั่งซ้อมมวย</h1>
+<div class="container">
+  <h1>🥊 ซ้อมมวยไชยา (Drill Caller)</h1>
 
-    <div class="timer-display" id="timer">03:00</div>
-    <div class="command-display" id="commandBox">พร้อมซ้อม</div>
+  <div class="timer-display" id="timer">03:00</div>
+  <div class="command-display" id="commandBox">พร้อมซ้อม</div>
 
-    <!-- ตั้งค่าตัวเลือกเสียงในเครื่อง -->
-    <div class="voice-setting">
-      <label for="voiceSelect">เลือกสำเนียงเสียงในเครื่อง:</label>
-      <select id="voiceSelect">
-        <option value="">กำลังโหลดเสียงภาษาไทย...</option>
-      </select>
+  <div class="controls">
+    <div>
+      <label>เวลายก (นาที)</label>
+      <input type="number" id="roundTime" value="3" min="1" max="10">
     </div>
-
-    <!-- ตั้งค่าเวลา -->
-    <div class="settings">
-      <label>
-        เวลายก (นาที)
-        <input type="number" id="roundMinutes" value="3" min="1" max="10">
-      </label>
-      <label>
-        สั่งทุกๆ (วินาที)
-        <input type="number" id="intervalSeconds" value="4" min="1" max="10">
-      </label>
-    </div>
-
-    <!-- ปุ่มควบคุม -->
-    <div class="btn-group">
-      <button class="btn-start" id="startBtn" onclick="startDrill()">เริ่มซ้อม</button>
-      <button class="btn-stop" id="stopBtn" onclick="stopDrill()">หยุด</button>
-    </div>
-
-    <!-- รายการท่าทาง -->
-    <div class="technique-box">
-      <strong>เลือกท่าที่ใช้ในรอบนี้:</strong>
-      <div class="technique-list" id="techniqueList">
-        <label><input type="checkbox" value="บั่นเศียรทศกัณฐ์" checked> บั่นเศียรทศกัณฐ์</label>
-        <label><input type="checkbox" value="ฝานบวบ" checked> ฝานบวบ</label>
-        <label><input type="checkbox" value="พม่ารำขวาน" checked> พม่ารำขวาน</label>
-        <label><input type="checkbox" value="กวางเหลียวหลัง" checked> กวางเหลียวหลัง</label>
-        <label><input type="checkbox" value="จระเข้ฟาดหาง" checked> จระเข้ฟาดหาง</label>
-      </div>
+    <div>
+      <label>ช่วงเวลาสั่ง (วินาที)</label>
+      <input type="number" id="intervalTime" value="3" min="1" max="10">
     </div>
   </div>
 
-  <script>
-    let timerInterval = null;
-    let commandInterval = null;
-    let remainingSeconds = 0;
-    let isRunning = false;
-    let thaiVoices = [];
+  <div class="technique-list" id="techniqueList">
+    <div class="technique-item"><label><input type="checkbox" value="หมัดตรง" checked> หมัดตรง</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="หมัดฮุก" checked> หมัดฮุก</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="หมัดสอยดาว" checked> หมัดสอยดาว</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="เตะตัด" checked> เตะตัด</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="ถีบ" checked> ถีบ</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="ศอกตัด" checked> ศอกตัด</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="ศอกพุ่ง" checked> ศอกพุ่ง</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="เข่าตรง" checked> เข่าตรง</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="บังหมัด" checked> บังหมัด</label></div>
+    <div class="technique-item"><label><input type="checkbox" value="หลบฉาก" checked> หลบฉาก</label></div>
+  </div>
 
-    // แผนผังไฟล์เสียงจริง (หากมีไฟล์เสียง .mp3 วางโฟลเดอร์เดียวกับโค้ด ให้ใส่ชื่อไฟล์ตรงนี้ได้เลย)
-    const audioFiles = {
-      "บั่นเศียรทศกัณฐ์": "audio/bansian.mp3",
-      "ฝานบวบ": "audio/fanbuab.mp3",
-      "พม่ารำขวาน": "audio/phama.mp3",
-      "กวางเหลียวหลัง": "audio/kwang.mp3",
-      "จระเข้ฟาดหาง": "audio/chorakhe.mp3",
-      "เริ่มยก": "audio/start.mp3",
-      "หมดเวลา": "audio/stop.mp3"
-    };
+  <button class="btn btn-start" id="startBtn" onclick="startDrill()">เริ่มซ้อม</button>
+  <button class="btn btn-stop" id="stopBtn" onclick="stopDrill()" style="display:none;">หยุด</button>
+</div>
 
-    // ดึงรายชื่อเสียงภาษาไทยจากเบราว์เซอร์
-    function loadVoices() {
-      if (!('speechSynthesis' in window)) return;
-      const allVoices = window.speechSynthesis.getVoices();
-      thaiVoices = allVoices.filter(voice => voice.lang.includes('th') || voice.lang.includes('TH'));
+<script>
+  let timerInterval = null;
+  let commandInterval = null;
+  let remainingSeconds = 0;
+  let isRunning = false;
 
-      const voiceSelect = document.getElementById('voiceSelect');
-      voiceSelect.innerHTML = '';
-
-      if (thaiVoices.length === 0) {
-        voiceSelect.innerHTML = '<option value="">เสียงภาษาไทยมาตรฐานระบบ</option>';
-        return;
-      }
-
-      thaiVoices.forEach((voice, index) => {
-        const option = document.createElement('option');
-        option.value = index;
-        option.textContent = `${voice.name} (${voice.lang})`;
-        voiceSelect.appendChild(option);
-      });
-    }
-
+  // โหลดเสียงของระบบเตรียมไว้
+  let systemVoices = [];
+  function loadVoices() {
     if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-      loadVoices();
+      systemVoices = window.speechSynthesis.getVoices();
     }
+  }
+  if ('speechSynthesis' in window) {
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
 
-    // ฟังก์ชันสั่งเสียง: เช็คไฟล์เสียงก่อน ถ้าไม่มีจึงใช้ Text-to-Speech
-    function playCommand(text) {
-      // 1. ตรวจสอบว่ามีไฟล์เสียง mp3 หรือไม่
-      if (audioFiles[text]) {
-        const audio = new Audio(audioFiles[text]);
-        audio.play().catch(() => {
-          // หากหาไฟล์ไม่พบหรือเปิดไม่ได้ ให้รัน Text-to-Speech สำรอง
-          speakText(text);
-        });
-      } else {
-        speakText(text);
+  // ฟังก์ชันเล่นเสียงพูดที่แก้ปัญหาระบบเสียงของ iPad / Safari
+  function playCommand(text) {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'th-TH';
+      utterance.rate = 1.1; // ความเร็วพอดีกับการซ้อมมวย
+
+      // ค้นหาเสียงภาษาไทย
+      if (!systemVoices.length) {
+        systemVoices = window.speechSynthesis.getVoices();
       }
-    }
-
-    function speakText(text) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'th-TH';
-        utterance.rate = 1.05;
-
-        const selectedIndex = document.getElementById('voiceSelect').value;
-        if (selectedIndex !== "" && thaiVoices[selectedIndex]) {
-          utterance.voice = thaiVoices[selectedIndex];
-        }
-
-        window.speechSynthesis.speak(utterance);
+      const thVoice = systemVoices.find(v => v.lang.includes('th') || v.lang.includes('TH'));
+      if (thVoice) {
+        utterance.voice = thVoice;
       }
+
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+
+  function triggerNextCommand() {
+    const checkboxes = document.querySelectorAll('#techniqueList input[type="checkbox"]:checked');
+    const selectedTechniques = Array.from(checkboxes).map(cb => cb.value);
+
+    if (selectedTechniques.length === 0) return;
+
+    const randomIndex = Math.floor(Math.random() * selectedTechniques.length);
+    const command = selectedTechniques[randomIndex];
+
+    document.getElementById('commandBox').innerText = command;
+    playCommand(command);
+  }
+
+  function startDrill() {
+    if (isRunning) return;
+
+    // ปลดล็อกระบบเสียงสำหรับ Safari iOS (สำคัญมาก ต้องสั่งทันทีที่นิ้วสัมผัส)
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const unlock = new SpeechSynthesisUtterance('');
+      unlock.lang = 'th-TH';
+      window.speechSynthesis.speak(unlock);
     }
 
-    function triggerNextCommand() {
-      const checkboxes = document.querySelectorAll('#techniqueList input[type="checkbox"]:checked');
-      const selectedTechniques = Array.from(checkboxes).map(cb => cb.value);
+    const roundMinutes = parseInt(document.getElementById('roundTime').value) || 3;
+    const intervalSec = parseInt(document.getElementById('intervalTime').value) || 3;
 
-      if (selectedTechniques.length === 0) return;
+    remainingSeconds = roundMinutes * 60;
+    isRunning = true;
 
-      const randomIndex = Math.floor(Math.random() * selectedTechniques.length);
-      const command = selectedTechniques[randomIndex];
+    document.getElementById('startBtn').style.display = 'none';
+    document.getElementById('stopBtn').style.display = 'block';
 
-      document.getElementById('commandBox').innerText = command;
-      playCommand(command);
-    }
+    document.getElementById('commandBox').innerText = "เริ่มชก!";
+    playCommand("เริ่มชก");
+    updateTimerDisplay();
 
-    function startDrill() {
-      if (isRunning) return;
+    // เริ่มออกคำสั่งแรกหลังจากเริ่ม 1 วินาที
+    setTimeout(() => {
+      if (isRunning) triggerNextCommand();
+    }, 1200);
 
-      const roundMinutes = parseInt(document.getElementById('roundMinutes').value) || 3;
-      const intervalSec = parseInt(document.getElementById('intervalSeconds').value) || 4;
-
-      remainingSeconds = roundMinutes * 60;
-      isRunning = true;
-
-      playCommand("เริ่มยก");
+    // ตัวจับเวลานับถอยหลัง
+    timerInterval = setInterval(() => {
+      remainingSeconds--;
       updateTimerDisplay();
 
-      setTimeout(() => {
-        if (isRunning) triggerNextCommand();
-      }, 1200);
+      if (remainingSeconds <= 0) {
+        endRound();
+      }
+    }, 1000);
 
-      timerInterval = setInterval(() => {
-        remainingSeconds--;
-        updateTimerDisplay();
+    // ตัวลูปสุ่มคำสั่งท่าชก
+    commandInterval = setInterval(() => {
+      if (remainingSeconds > 0 && isRunning) {
+        triggerNextCommand();
+      }
+    }, intervalSec * 1000);
+  }
 
-        if (remainingSeconds <= 0) {
-          endRound();
-        }
-      }, 1000);
+  function endRound() {
+    stopDrill();
+    document.getElementById('commandBox').innerText = "หมดเวลา!";
+    playCommand("หมดเวลา");
+  }
 
-      commandInterval = setInterval(() => {
-        if (remainingSeconds > 0) {
-          triggerNextCommand();
-        }
-      }, intervalSec * 1000);
-    }
+  function stopDrill() {
+    clearInterval(timerInterval);
+    clearInterval(commandInterval);
+    isRunning = false;
 
-    function endRound() {
-      stopDrill();
-      document.getElementById('commandBox').innerText = "หมดเวลา!";
-      playCommand("หมดเวลา");
-    }
+    document.getElementById('startBtn').style.display = 'block';
+    document.getElementById('stopBtn').style.display = 'none';
 
-    function stopDrill() {
-      clearInterval(timerInterval);
-      clearInterval(commandInterval);
-      isRunning = false;
+    if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
     }
+  }
 
-    function updateTimerDisplay() {
-      const mins = Math.floor(remainingSeconds / 60);
-      const secs = remainingSeconds % 60;
-      document.getElementById('timer').innerText = 
-        `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    }
-  </script>
+  function updateTimerDisplay() {
+    const mins = Math.floor(remainingSeconds / 60);
+    const secs = remainingSeconds % 60;
+    document.getElementById('timer').innerText = 
+      `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  }
+</script>
 </body>
 </html>
