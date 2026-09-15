@@ -3,269 +3,245 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ระบบสั่งคำสั่งซ้อมมวย (Muay Drill Caller)</title>
+  <title>ฝึกซ้อมลูกไม้มวยไชยา ระดับต้น</title>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #121212;
-      color: #FFFFFF;
-      text-align: center;
-      padding: 20px;
-      margin: 0;
-    }
-    .container {
-      max-width: 500px;
-      margin: auto;
-      background: #1E1E1E;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    }
-    h1 {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-      color: #FFB703;
-    }
-    .timer-display {
-      font-size: 3.5rem;
-      font-weight: bold;
-      font-family: monospace;
-      color: #00E676;
-      margin: 10px 0;
-    }
-    .command-display {
-      font-size: 2.2rem;
-      font-weight: bold;
-      min-height: 90px;
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'Kanit', 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
-      color: #FF5722;
-      background: #2A2A2A;
-      border-radius: 12px;
-      margin: 15px 0;
-      padding: 10px;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 24px;
+    }
+    .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 280px;
+      margin-bottom: 36px;
+    }
+    .th-text {
+      font-size: clamp(2rem, 5.5vw, 3.8rem);
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .phonetic-text {
+      font-size: clamp(1.3rem, 3.8vw, 2.4rem);
+      font-weight: 700;
+      color: #ff3b30;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .en-text {
+      font-size: clamp(1.2rem, 3.4vw, 2.2rem);
+      font-weight: 600;
+      color: #38bdf8;
+      line-height: 1.2;
     }
     .controls {
       display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
     }
-    .controls div {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.9rem;
-    }
-    input[type="number"] {
-      background: #333;
-      color: #FFF;
-      border: 1px solid #555;
-      padding: 8px;
-      border-radius: 8px;
-      margin-top: 5px;
+    button {
+      background-color: #1f2937;
+      color: #f3f4f6;
+      border: 1px solid #374151;
+      padding: 12px 24px;
       font-size: 1rem;
-      text-align: center;
-      width: 80px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
-    .technique-list {
-      text-align: left;
-      background: #2A2A2A;
-      padding: 12px 16px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      max-height: 220px;
-      overflow-y: auto;
+    button:hover {
+      background-color: #374151;
+      border-color: #4b5563;
     }
-    .technique-item {
-      margin: 10px 0;
-      font-size: 1.05rem;
+    button.primary {
+      background-color: #dc2626;
+      border-color: #ef4444;
+    }
+    button.primary:hover {
+      background-color: #b91c1c;
+    }
+    .settings {
       display: flex;
       align-items: center;
+      gap: 16px;
+      font-size: 0.95rem;
+      color: #9ca3af;
     }
-    .technique-item input {
-      margin-right: 12px;
-      width: 20px;
-      height: 20px;
+    select {
+      background-color: #111827;
+      color: #f9fafb;
+      border: 1px solid #374151;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.95rem;
     }
-    .btn {
-      width: 100%;
-      padding: 14px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-    .btn-start {
-      background-color: #00E676;
-      color: #121212;
-    }
-    .btn-stop {
-      background-color: #E53935;
-      color: #FFFFFF;
+    .status-badge {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: #6b7280;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>🥊 ซ้อมแม่ไม้มวยไทย</h1>
-
-  <div class="timer-display" id="timer">03:00</div>
-  <div class="command-display" id="commandBox">พร้อมซ้อม</div>
+  <div class="card">
+    <div class="th-text" id="thaiDisplay">พร้อมฝึกซ้อม</div>
+    <div class="phonetic-text" id="phoneticDisplay">READY</div>
+    <div class="en-text" id="englishDisplay">Press Start to Begin</div>
+  </div>
 
   <div class="controls">
-    <div>
-      <label>เวลายก (นาที)</label>
-      <input type="number" id="roundTime" value="3" min="1" max="10">
-    </div>
-    <div>
-      <label>ช่วงเวลาสั่ง (วินาที)</label>
-      <input type="number" id="intervalTime" value="3" min="1" max="10">
-    </div>
+    <button class="primary" id="btnToggle" onclick="toggleTraining()">เริ่มการฝึก (Start)</button>
+    <button onclick="nextMove()">ท่าถัดไป (Next)</button>
+    <button onclick="resetTraining()">เริ่มใหม่ (Reset)</button>
   </div>
 
-  <div class="technique-list" id="techniqueList">
-    <div class="technique-item"><label><input type="checkbox" value="กวางเหลียวหลัง" checked> กวางเหลียวหลัง</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="บั่นเศียรทศกัณฐ์" checked> บั่นเศียรทศกัณฐ์</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="จระเข้ฟาดหาง" checked> จระเข้ฟาดหาง</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="ฝานบวบ" checked> ฝานบวบ</label></div>
-    <div class="technique-item"><label><input type="checkbox" value="พม่ารำขวาน" checked> พม่ารำขวาน</label></div>
+  <div class="settings">
+    <label for="intervalSelect">หน่วงเวลาต่อท่า:</label>
+    <select id="intervalSelect" onchange="updateInterval()">
+      <option value="2500">2.5 วินาที</option>
+      <option value="3000" selected>3.0 วินาที</option>
+      <option value="4000">4.0 วินาที</option>
+      <option value="5000">5.0 วินาที</option>
+    </select>
   </div>
 
-  <button class="btn btn-start" id="startBtn" onclick="startDrill()">เริ่มซ้อม</button>
-  <button class="btn btn-stop" id="stopBtn" onclick="stopDrill()" style="display:none;">หยุด</button>
-</div>
+  <div class="status-badge" id="stepCounter">ลำดับที่: 0 / 60</div>
 
-<script>
-  let timerInterval = null;
-  let commandInterval = null;
-  let remainingSeconds = 0;
-  let isRunning = false;
+  <script>
+    // ชุดข้อมูลลำดับคำสั่งตามโครงสร้างวิดีโอลูกไม้ระดับต้น
+    const playlist = [
+      { th: "จดมวยเหลี่ยมซ้าย", pho: "JROD MUAY LIAM-SYE", en: "ASSUME LEFT GUARD" },
+      { th: "ห้ามทัพด้วยเข่า", pho: "HAHM-TUP DUAYKOW", en: "STOP THE ARMY With KNEE" },
+      { th: "จดมวยเหลี่ยมขวา", pho: "JROD MUAY LIAM-KWAH", en: "ASSUME RIGHT GUARD" },
+      { th: "ห้ามทัพด้วยเข่า", pho: "HAHM-TUP DUAYKOW", en: "STOP THE ARMY With KNEE" },
+      { th: "จดมวยเหลี่ยมซ้าย", pho: "JROD MUAY LIAM-SYE", en: "ASSUME LEFT GUARD" },
+      { th: "ห้ามทัพด้วยเข่าสลับเหลี่ยม", pho: "HAHM-TUP DUAYKOW S'LUB-LIEAM", en: "STOP THE ARMY With KNEE via Alternate Angles" },
+      { th: "จดมวยเหลี่ยมขวา", pho: "JROD MUAY LIAM-KWAH", en: "ASSUME RIGHT GUARD" },
+      { th: "ห้ามทัพด้วยเข่าสลับเหลี่ยม", pho: "HAHM-TUP DUAYKOW S'LUB-LIEAM", en: "STOP THE ARMY With KNEE via Alternate Angles" },
+      { th: "จดมวยเหลี่ยมซ้าย", pho: "JROD MUAY LIAM-SYE", en: "ASSUME LEFT GUARD" },
+      { th: "ปักลูกทอย", pho: "BPAHK_LOOG-TAWY", en: "Impale The Stake" },
+      { th: "จดมวยเหลี่ยมขวา", pho: "JROD MUAY LIAM-KWAH", en: "ASSUME RIGHT GUARD" },
+      { th: "ปักลูกทอย", pho: "BPAHK_LOOG-TAWY", en: "Impale The Stake" },
+      { th: "จดมวยเหลี่ยมซ้าย", pho: "JROD MUAY LIAM-SYE", en: "ASSUME LEFT GUARD" },
+      { th: "ปักษาแหวกรัง", pho: "BPUK-SAH_WAAG_RUNG", en: "Bird Peeps Into The Nest" },
+      { th: "จดมวยเหลี่ยมขวา", pho: "JROD MUAY LIAM-KWAH", en: "ASSUME RIGHT GUARD" },
+      { th: "ปักษาแหวกรัง", pho: "BPUK-SAH_WAAG_RUNG", en: "Bird Peeps Into The Nest" },
+      { th: "จดมวยเหลี่ยมซ้าย", pho: "JROD MUAY LIAM-SYE", en: "ASSUME LEFT GUARD" },
+      { th: "ห้ามทัพด้วยถีบ", pho: "HAHM_TUP-DUAY-TEEB", en: "Stop The Army With Push Kick" },
+      { th: "จดมวยเหลี่ยมขวา", pho: "JROD MUAY LIAM-KWAH", en: "ASSUME RIGHT GUARD" },
+      { th: "ห้ามทัพด้วยถีบ", pho: "HAHM_TUP-DUAY-TEEB", en: "Stop The Army With Push Kick" },
+      { th: "จดมวยเหลี่ยมซ้าย", pho: "JROD MUAY LIAM-SYE", en: "ASSUME LEFT GUARD" },
+      { th: "สลับฟันปลา", pho: "S'LUB-FUN-BPLAH", en: "Zigzag" },
+      { th: "จดมวยเหลี่ยมขวา", pho: "JROD MUAY LIAM-KWAH", en: "ASSUME RIGHT GUARD" },
+      { th: "สลับฟันปลา", pho: "S'LUB-FUN-BPLAH", en: "Zigzag" },
+      { th: "จดมวยเหลี่ยมซ้าย", pho: "JROD MUAY LIAM-SYE", en: "ASSUME LEFT GUARD" },
+      { th: "ห้ามทัพด้วยฝ่ามือ", pho: "HAHM_TUP-DUAY_FAH-MEUX", en: "Stop The Army with Palm" },
+      { th: "จดมวยเหลี่ยมขวา", pho: "JROD MUAY LIAM-KWAH", en: "ASSUME RIGHT GUARD" },
+      { th: "ห้ามทัพด้วยฝ่ามือ", pho: "HAHM_TUP-DUAY_FAH-MEUX", en: "Stop The Army with Palm" }
+    ];
 
-  let narisVoice = null;
+    let currentIndex = -1;
+    let timer = null;
+    let isRunning = false;
+    let stepDelay = 3000;
 
-  // ฟังก์ชันค้นหาเสียง "นริศ" (Naris) ของระบบ
-  function findNarisVoice() {
-    if ('speechSynthesis' in window) {
-      const voices = window.speechSynthesis.getVoices();
-      // ค้นหาเสียงชื่อ Naris หรือเสียงไทย
-      narisVoice = voices.find(v => (v.name.includes('Naris') || v.name.includes('นริศ')) && (v.lang.includes('th') || v.lang.includes('TH')));
-      
-      // ถ้าไม่มีเสียงนริศ ให้ใช้เสียงไทยทั่วไปสำรอง
-      if (!narisVoice) {
-        narisVoice = voices.find(v => v.lang.includes('th') || v.lang.includes('TH'));
-      }
-    }
-  }
+    // ระบบสังเคราะห์เสียงจำลอง TTS โทนกระชับ ชัดเจน
+    function speakText(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
 
-  if ('speechSynthesis' in window) {
-    findNarisVoice();
-    window.speechSynthesis.onvoiceschanged = findNarisVoice;
-  }
-
-  function playCommand(text) {
-    if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'th-TH';
-      utterance.rate = 1.0;
+      utterance.rate = 1.0;  // ความเร็วปกติ ชัดถ้อยชัดคำ
+      utterance.pitch = 0.9; // ปรับโทนทุ้มเล็กน้อยให้ใกล้เคียงเสียงต้นฉบับ
 
-      if (!narisVoice) {
-        findNarisVoice();
-      }
-      if (narisVoice) {
-        utterance.voice = narisVoice;
-      }
+      const voices = window.speechSynthesis.getVoices();
+      const thaiVoice = voices.find(v => v.lang.includes('th'));
+      if (thaiVoice) utterance.voice = thaiVoice;
 
       window.speechSynthesis.speak(utterance);
     }
-  }
 
-  function triggerNextCommand() {
-    const checkboxes = document.querySelectorAll('#techniqueList input[type="checkbox"]:checked');
-    const selectedTechniques = Array.from(checkboxes).map(cb => cb.value);
+    function renderCurrentStep() {
+      const item = playlist[currentIndex];
+      document.getElementById('thaiDisplay').innerText = item.th;
+      document.getElementById('phoneticDisplay').innerText = item.pho;
+      document.getElementById('englishDisplay').innerText = item.en;
+      document.getElementById('stepCounter').innerText = `ลำดับที่: ${currentIndex + 1} / ${playlist.length}`;
 
-    if (selectedTechniques.length === 0) return;
-
-    const randomIndex = Math.floor(Math.random() * selectedTechniques.length);
-    const command = selectedTechniques[randomIndex];
-
-    document.getElementById('commandBox').innerText = command;
-    playCommand(command);
-  }
-
-  function startDrill() {
-    if (isRunning) return;
-
-    // ปลดล็อกระบบเสียงสำหรับ Safari iOS
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const unlock = new SpeechSynthesisUtterance('');
-      unlock.lang = 'th-TH';
-      window.speechSynthesis.speak(unlock);
+      speakText(item.th);
     }
 
-    const roundMinutes = parseInt(document.getElementById('roundTime').value) || 3;
-    const intervalSec = parseInt(document.getElementById('intervalTime').value) || 3;
-
-    remainingSeconds = roundMinutes * 60;
-    isRunning = true;
-
-    document.getElementById('startBtn').style.display = 'none';
-    document.getElementById('stopBtn').style.display = 'block';
-
-    document.getElementById('commandBox').innerText = "เริ่มซ้อม!";
-    playCommand("เริ่มซ้อม");
-    updateTimerDisplay();
-
-    setTimeout(() => {
-      if (isRunning) triggerNextCommand();
-    }, 1200);
-
-    timerInterval = setInterval(() => {
-      remainingSeconds--;
-      updateTimerDisplay();
-
-      if (remainingSeconds <= 0) {
-        endRound();
-      }
-    }, 1000);
-
-    commandInterval = setInterval(() => {
-      if (remainingSeconds > 0 && isRunning) {
-        triggerNextCommand();
-      }
-    }, intervalSec * 1000);
-  }
-
-  function endRound() {
-    stopDrill();
-    document.getElementById('commandBox').innerText = "หมดเวลา!";
-    playCommand("หมดเวลา");
-  }
-
-  function stopDrill() {
-    clearInterval(timerInterval);
-    clearInterval(commandInterval);
-    isRunning = false;
-
-    document.getElementById('startBtn').style.display = 'block';
-    document.getElementById('stopBtn').style.display = 'none';
-
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
+    function nextMove() {
+      currentIndex = (currentIndex + 1) % playlist.length;
+      renderCurrentStep();
     }
-  }
 
-  function updateTimerDisplay() {
-    const mins = Math.floor(remainingSeconds / 60);
-    const secs = remainingSeconds % 60;
-    document.getElementById('timer').innerText = 
-      `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  }
-</script>
+    function toggleTraining() {
+      const btn = document.getElementById('btnToggle');
+      if (isRunning) {
+        clearInterval(timer);
+        timer = null;
+        isRunning = false;
+        btn.innerText = "ฝึกต่อ (Resume)";
+        btn.style.backgroundColor = "#16a34a";
+        btn.style.borderColor = "#22c55e";
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      } else {
+        isRunning = true;
+        btn.innerText = "หยุดชั่วคราว (Pause)";
+        btn.style.backgroundColor = "#dc2626";
+        btn.style.borderColor = "#ef4444";
+        nextMove();
+        timer = setInterval(nextMove, stepDelay);
+      }
+    }
+
+    function resetTraining() {
+      if (timer) clearInterval(timer);
+      timer = null;
+      isRunning = false;
+      currentIndex = -1;
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+      document.getElementById('btnToggle').innerText = "เริ่มการฝึก (Start)";
+      document.getElementById('btnToggle').style.backgroundColor = "#dc2626";
+      document.getElementById('btnToggle').style.borderColor = "#ef4444";
+      document.getElementById('thaiDisplay').innerText = "พร้อมฝึกซ้อม";
+      document.getElementById('phoneticDisplay').innerText = "READY";
+      document.getElementById('englishDisplay').innerText = "Press Start to Begin";
+      document.getElementById('stepCounter').innerText = `ลำดับที่: 0 / ${playlist.length}`;
+    }
+
+    function updateInterval() {
+      stepDelay = parseInt(document.getElementById('intervalSelect').value, 10);
+      if (isRunning) {
+        clearInterval(timer);
+        timer = setInterval(nextMove, stepDelay);
+      }
+    }
+
+    // โหลด Voice list ล่วงหน้าสำหรับเบราว์เซอร์ Chrome/Safari
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+  </script>
 </body>
 </html>
